@@ -1,0 +1,16 @@
+{
+  "compilerOptions": {
+    "rootDir": "src",
+    "noImplicitAny": true,
+    "strict": true,
+    "strictNullChecks": true,
+    "strictFunctionTypes": true,
+    "strictBindCallApply": true,
+    "strictPropertyInitialization": true,
+    "jsx": "react-jsx",
+    "esModuleInterop": true,
+    "lib": ["ESNext"],
+    "outDir": "dist",
+    "declaration": true,
+  },
+}
