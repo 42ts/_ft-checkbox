@@ -4,15 +4,16 @@
   "version": "0.0.1",
   "description": "checkbox headless react component",
   "files": [
-    "dist/index.d.ts",
-    "dist/index.js"
+    "index.d.ts",
+    "index.js"
   ],
-  "types": "./dist/index.d.ts",
-  "main": "./dist/index.js",
+  "types": "./index.d.ts",
+  "main": "./index.js",
   "scripts": {
     "build": "rimraf dist && tsc -p tsconfig.dist.json",
     "lint": "eslint .",
-    "test": "vitest run"
+    "test": "vitest run",
+    "publish": "npm run build && node publish.cjs && cd dist && npm publish"
   },
   "author": "Juyeong Maing <mjy9088@naver.com>",
   "repository": {
