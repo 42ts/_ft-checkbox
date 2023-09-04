@@ -1,11 +1,13 @@
+import { I } from '@-ft/i';
 import clsx from 'clsx';
 import { memo, useCallback, useState, type KeyboardEvent } from 'react';
 
-export type CheckboxChecked = 'true' | 'mixed' | 'false';
+export type CheckboxChecked = boolean | 'true' | 'mixed' | 'false';
 
 export interface CheckboxProps {
   toggle: () => void;
   checked: CheckboxChecked;
+  label: string;
   controlsIdRef?: string;
   style?: React.CSSProperties;
   className?: string;
@@ -14,11 +16,13 @@ export interface CheckboxProps {
   checkedClass?: string;
   uncheckedClass?: string;
   mixedClass?: string;
+  mergeClasses?: (classes: string) => string;
 }
 
 export const Checkbox = memo(function Checkbox({
   toggle,
   checked,
+  label,
   controlsIdRef,
   style,
   className,
@@ -27,6 +31,7 @@ export const Checkbox = memo(function Checkbox({
   checkedClass,
   uncheckedClass,
   mixedClass,
+  mergeClasses,
 }: CheckboxProps): React.JSX.Element {
   const [focused, setFocused] = useState(false);
 
@@ -66,15 +71,18 @@ export const Checkbox = memo(function Checkbox({
   return (
     <div
       style={style}
-      className={clsx(
-        className,
-        focused ? focusedClass : blurredClass,
-        checked === 'true' && checkedClass,
-        checked === 'false' && uncheckedClass,
-        checked === 'mixed' && mixedClass
+      className={(mergeClasses ?? I)(
+        clsx(
+          className,
+          focused ? focusedClass : blurredClass,
+          (checked === 'true' || checked === true) && checkedClass,
+          (checked === 'false' || checked === false) && uncheckedClass,
+          checked === 'mixed' && mixedClass
+        )
       )}
       tabIndex={0}
       role="checkbox"
+      aria-label={label}
       aria-controls={controlsIdRef}
       aria-checked={checked}
       onKeyUp={handleKeyUp}

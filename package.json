@@ -9,7 +9,7 @@
     "build": "rimraf dist && tsc -p tsconfig.dist.json",
     "lint": "eslint .",
     "test": "vitest run",
-    "publish": "npm run build && package-json-minifier && cd dist && npm publish"
+    "publish": "npm run build && package-json-minifier && cpy README.md dist && cd dist && npm publish"
   },
   "author": "Juyeong Maing <mjy9088@naver.com>",
   "repository": {
@@ -24,6 +24,7 @@
     "@types/react-dom": "^18.2.7",
     "@typescript-eslint/eslint-plugin": "^6.5.0",
     "@typescript-eslint/parser": "^6.5.0",
+    "cpy-cli": "^5.0.0",
     "eslint": "^8.48.0",
     "eslint-config-airbnb": "^19.0.4",
     "eslint-config-airbnb-typescript": "^17.1.0",
@@ -39,7 +40,7 @@
     "eslint-plugin-react": "^7.33.2",
     "eslint-plugin-react-hooks": "^4.6.0",
     "jsdom": "^22.1.0",
-    "package.json-minifier": "^0.0.1-pre2",
+    "package.json-minifier": "^0.0.4",
     "prettier": "^3.0.3",
     "rimraf": "^5.0.1",
     "typescript": "^5.2.2",
@@ -49,5 +50,8 @@
     "clsx": "^2.0.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0"
+  },
+  "dependencies": {
+    "@-ft/i": "^0.0.1"
   }
 }
