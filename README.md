@@ -23,4 +23,4 @@ function MyCheckbox() {
 
 This checkbox is fully accessible and fully customizable.
 
-If not? please make a pull request :\)
+If not? then please make a pull request :\)

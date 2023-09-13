@@ -10,7 +10,7 @@
     "jsx": "react-jsx",
     "esModuleInterop": true,
     "lib": ["ESNext"],
-    "outDir": "dist",
+    "outDir": "compile",
     "declaration": true,
   },
   "include": [
