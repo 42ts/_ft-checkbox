@@ -1,8 +1,11 @@
 import { I } from '@-ft/i';
 import clsx from 'clsx';
 import {
+  forwardRef,
   memo,
   useCallback,
+  useImperativeHandle,
+  useRef,
   useState,
   type CSSProperties,
   type KeyboardEvent,
@@ -26,79 +29,95 @@ export interface CheckboxProps {
   mergeClasses?: (classes: string) => string;
 }
 
-export const Checkbox = memo(function Checkbox({
-  toggle,
-  checked,
-  label,
-  descriptionIdRef,
-  controlsIdRef,
-  style,
-  className,
-  focusedClass,
-  blurredClass,
-  checkedClass,
-  uncheckedClass,
-  mixedClass,
-  mergeClasses,
-}: CheckboxProps): React.JSX.Element {
-  const [focused, setFocused] = useState(false);
+export interface CheckboxRef {
+  focus: () => void;
+}
 
-  const handleKeyDown = useCallback((event: KeyboardEvent) => {
-    if (event.key === ' ') {
-      event.preventDefault();
-    }
-  }, []);
+export const Checkbox = memo(
+  forwardRef<CheckboxRef, CheckboxProps>(function Checkbox(
+    {
+      toggle,
+      checked,
+      label,
+      descriptionIdRef,
+      controlsIdRef,
+      style,
+      className,
+      focusedClass,
+      blurredClass,
+      checkedClass,
+      uncheckedClass,
+      mixedClass,
+      mergeClasses,
+    }: CheckboxProps,
+    ref
+  ): React.JSX.Element {
+    const elementPersist = useRef<HTMLDivElement>(null);
+    const focus = useCallback(() => {
+      elementPersist.current?.focus();
+    }, [elementPersist]);
+    useImperativeHandle(ref, () => ({ focus }), [focus]);
 
-  const handleKeyUp = useCallback(
-    (event: KeyboardEvent) => {
-      switch (event.key) {
-        case ' ':
-          toggle();
-          event.stopPropagation();
-          break;
+    const [focused, setFocused] = useState(false);
 
-        default:
-          break;
+    const handleKeyDown = useCallback((event: KeyboardEvent) => {
+      if (event.key === ' ') {
+        event.preventDefault();
       }
-    },
-    [toggle]
-  );
+    }, []);
 
-  const handleClick = useCallback(() => {
-    toggle();
-  }, [toggle]);
+    const handleKeyUp = useCallback(
+      (event: KeyboardEvent) => {
+        switch (event.key) {
+          case ' ':
+            toggle();
+            event.stopPropagation();
+            break;
 
-  const handleFocus = useCallback(() => {
-    setFocused(true);
-  }, [setFocused]);
+          default:
+            break;
+        }
+      },
+      [toggle]
+    );
 
-  const handleBlur = useCallback(() => {
-    setFocused(false);
-  }, [setFocused]);
+    const handleClick = useCallback(() => {
+      toggle();
+    }, [toggle]);
 
-  return (
-    <div
-      style={style}
-      className={(mergeClasses ?? I)(
-        clsx(
-          className,
-          focused ? focusedClass : blurredClass,
-          (checked === 'true' || checked === true) && checkedClass,
-          (checked === 'false' || checked === false) && uncheckedClass,
-          checked === 'mixed' && mixedClass
-        )
-      )}
-      tabIndex={0}
-      role="checkbox"
-      aria-label={label}
-      aria-describedby={descriptionIdRef}
-      aria-controls={controlsIdRef}
-      aria-checked={checked}
-      onKeyUp={handleKeyUp}
-      onKeyDown={handleKeyDown}
-      onClick={handleClick}
-      onFocus={handleFocus}
-      onBlur={handleBlur}
-    />
-  );
-});
+    const handleFocus = useCallback(() => {
+      setFocused(true);
+    }, [setFocused]);
+
+    const handleBlur = useCallback(() => {
+      setFocused(false);
+    }, [setFocused]);
+
+    return (
+      <div
+        ref={elementPersist}
+        style={style}
+        className={(mergeClasses ?? I)(
+          clsx(
+            className,
+            focused ? focusedClass : blurredClass,
+            (checked === 'true' || checked === true) && checkedClass,
+            (checked === 'false' || checked === false) && uncheckedClass,
+            checked === 'mixed' && mixedClass
+          )
+        )}
+        tabIndex={0}
+        role="checkbox"
+        aria-label={label}
+        aria-describedby={descriptionIdRef}
+        aria-controls={controlsIdRef}
+        aria-checked={checked}
+        onKeyUp={handleKeyUp}
+        onKeyDown={handleKeyDown}
+        onClick={handleClick}
+        onFocus={handleFocus}
+        onBlur={handleBlur}
+      />
+    );
+  })
+);

@@ -9,7 +9,7 @@
     "strictPropertyInitialization": true,
     "jsx": "react-jsx",
     "esModuleInterop": true,
-    "lib": ["ESNext"],
+    "lib": ["ESNext", "DOM"],
     "outDir": "compile",
     "declaration": true,
   },
