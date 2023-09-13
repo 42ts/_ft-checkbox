@@ -1,6 +1,12 @@
 import { I } from '@-ft/i';
 import clsx from 'clsx';
-import { memo, useCallback, useState, type KeyboardEvent } from 'react';
+import {
+  memo,
+  useCallback,
+  useState,
+  type CSSProperties,
+  type KeyboardEvent,
+} from 'react';
 
 export type CheckboxChecked = boolean | 'true' | 'mixed' | 'false';
 
@@ -8,8 +14,9 @@ export interface CheckboxProps {
   toggle: () => void;
   checked: CheckboxChecked;
   label: string;
+  descriptionIdRef?: string;
   controlsIdRef?: string;
-  style?: React.CSSProperties;
+  style?: CSSProperties;
   className?: string;
   focusedClass?: string;
   blurredClass?: string;
@@ -23,6 +30,7 @@ export const Checkbox = memo(function Checkbox({
   toggle,
   checked,
   label,
+  descriptionIdRef,
   controlsIdRef,
   style,
   className,
@@ -83,6 +91,7 @@ export const Checkbox = memo(function Checkbox({
       tabIndex={0}
       role="checkbox"
       aria-label={label}
+      aria-describedby={descriptionIdRef}
       aria-controls={controlsIdRef}
       aria-checked={checked}
       onKeyUp={handleKeyUp}
